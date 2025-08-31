@@ -1,309 +1,233 @@
 // Quadrilateral Area Calculator using Shoelace Formula
-document.addEventListener('DOMContentLoaded', function() {
-    console.log('Initializing Quadrilateral Area Calculator...');
-    
-    // Get DOM elements
-    const form = document.getElementById('calculatorForm');
-    const resultDiv = document.getElementById('result');
-    const clearBtn = document.getElementById('clearBtn');
-    const squareExampleBtn = document.getElementById('squareExample');
-    const rectangleExampleBtn = document.getElementById('rectangleExample');
-    
-    // Verify elements exist
-    if (!form || !resultDiv) {
-        console.error('Required DOM elements not found');
-        return;
+class QuadrilateralCalculator {
+    constructor() {
+        this.initializeElements();
+        this.bindEvents();
+        this.hideResult(); // Start with result hidden
     }
-    
-    // Form submission handler
-    form.addEventListener('submit', function(event) {
-        event.preventDefault();
-        console.log('Form submitted');
-        
-        try {
-            const coordinates = getCoordinates();
-            console.log('Coordinates:', coordinates);
-            
-            const result = calculateArea(coordinates);
-            console.log('Calculation result:', result);
-            
-            displayResult(result, coordinates);
-        } catch (error) {
-            console.error('Calculation error:', error);
-            displayError(error.message);
+
+    initializeElements() {
+        // Input elements
+        this.inputs = {
+            x1: document.getElementById('x1'),
+            y1: document.getElementById('y1'),
+            x2: document.getElementById('x2'),
+            y2: document.getElementById('y2'),
+            x3: document.getElementById('x3'),
+            y3: document.getElementById('y3'),
+            x4: document.getElementById('x4'),
+            y4: document.getElementById('y4')
+        };
+
+        // Button elements
+        this.calculateBtn = document.getElementById('calculate-btn');
+        this.clearBtn = document.getElementById('clear-btn');
+
+        // Result elements
+        this.resultContainer = document.getElementById('result');
+        this.areaResult = document.getElementById('area-result');
+
+        // Verify elements exist
+        if (!this.resultContainer || !this.areaResult) {
+            console.error('Result elements not found');
+            return;
         }
-    });
-    
-    // Clear button handler
-    if (clearBtn) {
-        clearBtn.addEventListener('click', function() {
-            console.log('Clear button clicked');
-            clearAllInputs();
-        });
     }
-    
-    // Square example button handler
-    if (squareExampleBtn) {
-        squareExampleBtn.addEventListener('click', function() {
-            console.log('Square example button clicked');
-            loadSquareExample();
+
+    bindEvents() {
+        if (!this.calculateBtn || !this.clearBtn) {
+            console.error('Button elements not found');
+            return;
+        }
+
+        this.calculateBtn.addEventListener('click', () => {
+            console.log('Calculate button clicked');
+            this.calculateArea();
         });
-    }
-    
-    // Rectangle example button handler  
-    if (rectangleExampleBtn) {
-        rectangleExampleBtn.addEventListener('click', function() {
-            console.log('Rectangle example button clicked');
-            loadRectangleExample();
-        });
-    }
-    
-    // Get coordinates from form inputs
-    function getCoordinates() {
-        const coords = {};
-        const coordIds = ['x1', 'y1', 'x2', 'y2', 'x3', 'y3', 'x4', 'y4'];
         
-        for (const id of coordIds) {
-            const input = document.getElementById(id);
+        this.clearBtn.addEventListener('click', () => {
+            console.log('Clear button clicked');
+            this.clearInputs();
+        });
+
+        // Allow Enter key to trigger calculation
+        Object.values(this.inputs).forEach(input => {
+            if (input) {
+                input.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') {
+                        this.calculateArea();
+                    }
+                });
+            }
+        });
+    }
+
+    validateInputs() {
+        const values = {};
+        const errors = [];
+
+        // Check if all inputs have values
+        for (const [key, input] of Object.entries(this.inputs)) {
             if (!input) {
-                throw new Error(`Input field ${id} not found`);
+                errors.push(`Input ${key} not found`);
+                continue;
             }
             
             const value = input.value.trim();
-            
             if (value === '') {
-                throw new Error(`Please enter a value for ${id.toUpperCase()}`);
+                errors.push(`${key} is required`);
+            } else if (isNaN(value)) {
+                errors.push(`${key} must be a valid number`);
+            } else {
+                values[key] = parseFloat(value);
             }
-            
-            const numValue = parseFloat(value);
-            if (isNaN(numValue)) {
-                throw new Error(`Please enter a valid number for ${id.toUpperCase()}`);
-            }
-            
-            coords[id] = numValue;
         }
-        
-        return coords;
-    }
-    
-    // Calculate area using Shoelace formula
-    function calculateArea(coords) {
-        const { x1, y1, x2, y2, x3, y3, x4, y4 } = coords;
-        
-        // Shoelace formula: A = (1/2) * |[(x1y2 + x2y3 + x3y4 + x4y1) - (x2y1 + x3y2 + x4y3 + x1y4)]|
-        const positive = (x1 * y2) + (x2 * y3) + (x3 * y4) + (x4 * y1);
-        const negative = (x2 * y1) + (x3 * y2) + (x4 * y3) + (x1 * y4);
-        const area = Math.abs(positive - negative) / 2;
-        
-        return {
-            area: area,
-            positive: positive,
-            negative: negative
-        };
-    }
-    
-    // Display successful result
-    function displayResult(result, coordinates) {
-        const { area, positive, negative } = result;
-        
-        resultDiv.innerHTML = `
-            <div class="result-success">
-                <h3>Area Calculated Successfully!</h3>
-                <div class="area-value">${area.toFixed(4)} square units</div>
-                <p><strong>Coordinates used:</strong></p>
-                <p>Point 1: (${coordinates.x1}, ${coordinates.y1})</p>
-                <p>Point 2: (${coordinates.x2}, ${coordinates.y2})</p>
-                <p>Point 3: (${coordinates.x3}, ${coordinates.y3})</p>
-                <p>Point 4: (${coordinates.x4}, ${coordinates.y4})</p>
-                
-                <div class="calculation-details">
-                    <strong>Calculation Steps:</strong><br>
-                    Positive sum: (${coordinates.x1}×${coordinates.y2}) + (${coordinates.x2}×${coordinates.y3}) + (${coordinates.x3}×${coordinates.y4}) + (${coordinates.x4}×${coordinates.y1}) = ${positive.toFixed(4)}<br>
-                    Negative sum: (${coordinates.x2}×${coordinates.y1}) + (${coordinates.x3}×${coordinates.y2}) + (${coordinates.x4}×${coordinates.y3}) + (${coordinates.x1}×${coordinates.y4}) = ${negative.toFixed(4)}<br>
-                    Difference: |${positive.toFixed(4)} - ${negative.toFixed(4)}| = ${Math.abs(positive - negative).toFixed(4)}<br>
-                    Final area: ${Math.abs(positive - negative).toFixed(4)} ÷ 2 = ${area.toFixed(4)}
-                </div>
-            </div>
-        `;
 
+        return { values, errors };
+    }
+
+    calculateShoelaceArea(coordinates) {
+        const { x1, y1, x2, y2, x3, y3, x4, y4 } = coordinates;
+
+        // Shoelace formula for quadrilateral
+        // A = (1/2) × |[(x1y2 + x2y3 + x3y4 + x4y1) – (x2y1 + x3y2 + x4y3 + x1y4)]|
+        const sum1 = (x1 * y2) + (x2 * y3) + (x3 * y4) + (x4 * y1);
+        const sum2 = (x2 * y1) + (x3 * y2) + (x4 * y3) + (x1 * y4);
+        
+        const area = Math.abs(sum1 - sum2) / 2;
+        console.log('Calculated area:', area);
+        return area;
+    }
+
+    calculateArea() {
+        console.log('Starting calculation...');
+        const { values, errors } = this.validateInputs();
+
+        if (errors.length > 0) {
+            console.log('Validation errors:', errors);
+            this.showError('Please fill in all coordinate fields with valid numbers.');
+            return;
+        }
+
+        try {
+            console.log('Input values:', values);
+            const area = this.calculateShoelaceArea(values);
+            this.showResult(area);
+        } catch (error) {
+            console.error('Calculation error:', error);
+            this.showError('Error calculating area. Please check your coordinates.');
+        }
+    }
+
+    showResult(area) {
+        console.log('Showing result:', area);
+        if (!this.areaResult || !this.resultContainer) {
+            console.error('Result elements not available');
+            return;
+        }
+
+        this.areaResult.textContent = `Area = ${area.toFixed(4)} square units`;
+        this.areaResult.style.color = 'var(--color-primary)';
+        
+        // Show the result container
+        this.resultContainer.style.display = 'block';
+        this.resultContainer.classList.remove('hidden');
+        
+        console.log('Result displayed');
+        
         // Scroll to result on mobile
         if (window.innerWidth < 768) {
             setTimeout(() => {
-                resultDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                this.resultContainer.scrollIntoView({ 
+                    behavior: 'smooth', 
+                    block: 'nearest' 
+                });
             }, 100);
         }
     }
-    
-    // Display error message
-    function displayError(message) {
-        resultDiv.innerHTML = `
-            <div class="result-error">
-                <h3>Error</h3>
-                <p>${message}</p>
-                <p>Please check your inputs and try again.</p>
-            </div>
-        `;
 
-        // Scroll to result on mobile
-        if (window.innerWidth < 768) {
-            setTimeout(() => {
-                resultDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-            }, 100);
+    showError(message) {
+        console.log('Showing error:', message);
+        if (!this.areaResult || !this.resultContainer) {
+            console.error('Result elements not available for error');
+            return;
         }
-    }
-    
-    // Clear all input fields
-    function clearAllInputs() {
-        const coordIds = ['x1', 'y1', 'x2', 'y2', 'x3', 'y3', 'x4', 'y4'];
+
+        this.areaResult.textContent = message;
+        this.areaResult.style.color = 'var(--color-error)';
         
-        coordIds.forEach(id => {
-            const input = document.getElementById(id);
+        // Show the result container
+        this.resultContainer.style.display = 'block';
+        this.resultContainer.classList.remove('hidden');
+        
+        // Reset color after a delay
+        setTimeout(() => {
+            this.areaResult.style.color = 'var(--color-primary)';
+        }, 3000);
+    }
+
+    hideResult() {
+        if (!this.resultContainer) {
+            console.error('Result container not available for hiding');
+            return;
+        }
+        
+        this.resultContainer.style.display = 'none';
+        this.resultContainer.classList.add('hidden');
+        console.log('Result hidden');
+    }
+
+    clearInputs() {
+        console.log('Clearing inputs');
+        // Clear all input fields
+        Object.values(this.inputs).forEach(input => {
             if (input) {
                 input.value = '';
-                input.style.borderColor = '';
-                input.removeAttribute('aria-invalid');
             }
         });
 
-        // Reset result display
-        resultDiv.innerHTML = `
-            <p class="result-placeholder">Enter coordinates and click "Calculate Area" to see the result</p>
-        `;
-
-        // Focus on first input
-        const firstInput = document.getElementById('x1');
-        if (firstInput) {
-            firstInput.focus();
+        // Hide result
+        this.hideResult();
+        
+        // Focus on first input for better UX
+        if (this.inputs.x1) {
+            this.inputs.x1.focus();
         }
     }
-    
-    // Load square example
-    function loadSquareExample() {
-        const squareCoords = {
-            x1: 0, y1: 0,
-            x2: 2, y2: 0,
-            x3: 2, y3: 2,
-            x4: 0, y4: 2
-        };
-        
-        setCoordinates(squareCoords);
-        
-        // Automatically calculate after setting coordinates
-        setTimeout(() => {
-            try {
-                const result = calculateArea(squareCoords);
-                displayResult(result, squareCoords);
-            } catch (error) {
-                displayError(error.message);
-            }
-        }, 100);
-    }
-    
-    // Load rectangle example
-    function loadRectangleExample() {
-        const rectangleCoords = {
-            x1: 0, y1: 0,
-            x2: 3, y2: 0,
-            x3: 3, y3: 2,
-            x4: 0, y4: 2
-        };
-        
-        setCoordinates(rectangleCoords);
-        
-        // Automatically calculate after setting coordinates
-        setTimeout(() => {
-            try {
-                const result = calculateArea(rectangleCoords);
-                displayResult(result, rectangleCoords);
-            } catch (error) {
-                displayError(error.message);
-            }
-        }, 100);
-    }
-    
-    // Set coordinate values in input fields
-    function setCoordinates(coords) {
-        Object.keys(coords).forEach(key => {
-            const input = document.getElementById(key);
-            if (input) {
-                input.value = coords[key];
-                input.style.borderColor = '';
-                input.removeAttribute('aria-invalid');
-            }
-        });
-    }
-    
-    // Add input validation
-    function addInputValidation() {
-        const inputs = document.querySelectorAll('input[type="number"]');
-        
-        inputs.forEach(input => {
-            input.addEventListener('input', function() {
-                const value = this.value.trim();
-                if (value !== '' && isNaN(parseFloat(value))) {
-                    this.style.borderColor = 'var(--color-error)';
-                    this.setAttribute('aria-invalid', 'true');
-                } else {
-                    this.style.borderColor = '';
-                    this.removeAttribute('aria-invalid');
-                }
-            });
 
-            input.addEventListener('focus', function() {
-                if (!this.hasAttribute('aria-invalid')) {
-                    this.style.borderColor = 'var(--color-primary)';
-                }
-            });
+    // Utility method to load example coordinates for testing
+    loadExample(type = 'square') {
+        const examples = {
+            square: { x1: 0, y1: 0, x2: 2, y2: 0, x3: 2, y3: 2, x4: 0, y4: 2 },
+            rectangle: { x1: 0, y1: 0, x2: 3, y2: 0, x3: 3, y3: 2, x4: 0, y4: 2 }
+        };
 
-            input.addEventListener('blur', function() {
-                if (!this.hasAttribute('aria-invalid')) {
-                    this.style.borderColor = '';
+        const coords = examples[type];
+        if (coords) {
+            Object.entries(coords).forEach(([key, value]) => {
+                if (this.inputs[key]) {
+                    this.inputs[key].value = value;
                 }
-            });
-        });
-    }
-    
-    // Add keyboard navigation
-    function addKeyboardNavigation() {
-        const inputs = document.querySelectorAll('input[type="number"]');
-        
-        inputs.forEach((input, index) => {
-            input.addEventListener('keydown', function(e) {
-                if (e.key === 'Enter') {
-                    if (index < inputs.length - 1) {
-                        // Move to next input
-                        inputs[index + 1].focus();
-                        inputs[index + 1].select();
-                    } else {
-                        // Last input, try to submit form
-                        form.dispatchEvent(new Event('submit'));
-                    }
-                }
-            });
-        });
-    }
-    
-    // Add loading state to submit button
-    function addLoadingState() {
-        const submitBtn = form.querySelector('button[type="submit"]');
-        
-        if (submitBtn) {
-            form.addEventListener('submit', function() {
-                submitBtn.disabled = true;
-                submitBtn.textContent = 'Calculating...';
-                
-                setTimeout(() => {
-                    submitBtn.disabled = false;
-                    submitBtn.textContent = 'Calculate Area';
-                }, 500);
             });
         }
     }
-    
-    // Initialize all features
-    addInputValidation();
-    addKeyboardNavigation();
-    addLoadingState();
-    
-    console.log('Quadrilateral Area Calculator initialized successfully');
+}
+
+// Initialize calculator when DOM is loaded
+document.addEventListener('DOMContentLoaded', () => {
+    console.log('DOM loaded, initializing calculator');
+    window.calculator = new QuadrilateralCalculator();
+});
+
+// Prevent zoom on input focus for iOS
+document.addEventListener('touchstart', {});
+
+// Handle viewport changes for mobile
+window.addEventListener('resize', () => {
+    // Force viewport recalculation on orientation change
+    if (window.innerHeight < window.innerWidth && window.innerHeight < 500) {
+        document.body.style.minHeight = window.innerHeight + 'px';
+    } else {
+        document.body.style.minHeight = '100vh';
+    }
 });

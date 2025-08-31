@@ -7,129 +7,67 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="app-container">
+    <div class="container">
         <header class="header">
-            <div class="container">
-                <h1 class="header-title">Quadrilateral Area Calculator</h1>
-                <p class="header-subtitle">Calculate the area of any quadrilateral using coordinate geometry</p>
-            </div>
+            <h1>Quadrilateral Area Calculator</h1>
+            <p>Calculate the area of any quadrilateral using coordinates</p>
         </header>
-
+        
         <main class="main-content">
-            <div class="container">
-                <div class="calculator-section">
-                    <div class="card">
-                        <div class="card__body">
-                            <h2>Enter Coordinates</h2>
-                            <p class="instruction-text">Enter the coordinates of the four vertices in order (clockwise or counterclockwise)</p>
-                            
-                            <form id="calculatorForm" class="coordinate-form">
-                                <div class="coordinates-grid">
-                                    <div class="coordinate-group">
-                                        <label class="form-label">Point 1 (x₁, y₁)</label>
-                                        <div class="coordinate-inputs">
-                                            <input type="number" step="any" class="form-control" id="x1" placeholder="x₁" required>
-                                            <input type="number" step="any" class="form-control" id="y1" placeholder="y₁" required>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="coordinate-group">
-                                        <label class="form-label">Point 2 (x₂, y₂)</label>
-                                        <div class="coordinate-inputs">
-                                            <input type="number" step="any" class="form-control" id="x2" placeholder="x₂" required>
-                                            <input type="number" step="any" class="form-control" id="y2" placeholder="y₂" required>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="coordinate-group">
-                                        <label class="form-label">Point 3 (x₃, y₃)</label>
-                                        <div class="coordinate-inputs">
-                                            <input type="number" step="any" class="form-control" id="x3" placeholder="x₃" required>
-                                            <input type="number" step="any" class="form-control" id="y3" placeholder="y₃" required>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="coordinate-group">
-                                        <label class="form-label">Point 4 (x₄, y₄)</label>
-                                        <div class="coordinate-inputs">
-                                            <input type="number" step="any" class="form-control" id="x4" placeholder="x₄" required>
-                                            <input type="number" step="any" class="form-control" id="y4" placeholder="y₄" required>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="button-group">
-                                    <button type="submit" class="btn btn--primary">Calculate Area</button>
-                                    <button type="button" id="clearBtn" class="btn btn--secondary">Clear All</button>
-                                </div>
-                            </form>
-
-                            <div class="example-section">
-                                <h3>Quick Examples</h3>
-                                <div class="example-buttons">
-                                    <button type="button" id="squareExample" class="btn btn--outline btn--sm">Square (Area: 4)</button>
-                                    <button type="button" id="rectangleExample" class="btn btn--outline btn--sm">Rectangle (Area: 6)</button>
-                                </div>
-                            </div>
+            <div class="calculator-container">
+                <div class="coordinate-grid">
+                    <div class="coordinate-pair">
+                        <label class="form-label">Point A (x₁, y₁)</label>
+                        <div class="coordinate-inputs">
+                            <input type="number" id="x1" class="form-control coordinate-input" placeholder="x₁" step="any">
+                            <input type="number" id="y1" class="form-control coordinate-input" placeholder="y₁" step="any">
                         </div>
                     </div>
-
-                    <div class="result-section">
-                        <div class="card">
-                            <div class="card__body">
-                                <h2>Result</h2>
-                                <div id="result" class="result-display">
-                                    <p class="result-placeholder">Enter coordinates and click "Calculate Area" to see the result</p>
-                                </div>
-                            </div>
+                    
+                    <div class="coordinate-pair">
+                        <label class="form-label">Point B (x₂, y₂)</label>
+                        <div class="coordinate-inputs">
+                            <input type="number" id="x2" class="form-control coordinate-input" placeholder="x₂" step="any">
+                            <input type="number" id="y2" class="form-control coordinate-input" placeholder="y₂" step="any">
                         </div>
+                    </div>
+                    
+                    <div class="coordinate-pair">
+                        <label class="form-label">Point C (x₃, y₃)</label>
+                        <div class="coordinate-inputs">
+                            <input type="number" id="x3" class="form-control coordinate-input" placeholder="x₃" step="any">
+                            <input type="number" id="y3" class="form-control coordinate-input" placeholder="y₃" step="any">
+                        </div>
+                    </div>
+                    
+                    <div class="coordinate-pair">
+                        <label class="form-label">Point D (x₄, y₄)</label>
+                        <div class="coordinate-inputs">
+                            <input type="number" id="x4" class="form-control coordinate-input" placeholder="x₄" step="any">
+                            <input type="number" id="y4" class="form-control coordinate-input" placeholder="y₄" step="any">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="button-container">
+                    <button type="button" id="calculate-btn" class="btn btn--primary btn--full-width">Calculate Area</button>
+                    <button type="button" id="clear-btn" class="btn btn--secondary btn--full-width">Clear All</button>
+                </div>
+                
+                <div id="result" class="result-container">
+                    <div class="result-content">
+                        <h3>Result</h3>
+                        <p id="area-result" class="area-value">Enter coordinates and click Calculate Area</p>
                     </div>
                 </div>
             </div>
         </main>
-
+        
         <footer class="footer">
-            <div class="container">
-                <div class="footer-content">
-                    <div class="footer-section">
-                        <h3>About the Shoelace Formula</h3>
-                        <p>The Shoelace formula (also known as the surveyor's formula) is a mathematical algorithm to determine the area of a simple polygon whose vertices are described by their Cartesian coordinates.</p>
-                        
-                        <div class="formula-display">
-                            <h4>Formula Used:</h4>
-                            <code class="formula-code">A = ½ × [(x₁y₂ + x₂y₃ + x₃y₄ + x₄y₁) – (x₂y₁ + x₃y₂ + x₄y₃ + x₁y₄)]</code>
-                        </div>
-                    </div>
-
-                    <div class="footer-section">
-                        <h3>Usage Tips</h3>
-                        <ul class="tips-list">
-                            <li>Enter coordinates in clockwise or counterclockwise order</li>
-                            <li>Decimal values are supported for precise calculations</li>
-                            <li>The formula works for any simple (non-self-intersecting) quadrilateral</li>
-                            <li>Result is always positive (absolute area)</li>
-                        </ul>
-                    </div>
-
-                    <div class="footer-section">
-                        <h3>Applications</h3>
-                        <p>This calculator is useful for coordinate geometry, surveying, computer graphics, and geometric analysis. It's commonly used in fields such as:</p>
-                        <ul class="applications-list">
-                            <li>Land surveying and property measurement</li>
-                            <li>Computer graphics and game development</li>
-                            <li>Engineering and architectural planning</li>
-                            <li>Mathematical education and research</li>
-                        </ul>
-                    </div>
-
-                    <div class="footer-bottom">
-                        <p>&copy; 2025 Quadrilateral Area Calculator. Built with coordinate geometry principles.</p>
-                    </div>
-                </div>
-            </div>
+            <p>Uses the Shoelace formula from coordinate geometry</p>
         </footer>
     </div>
-
+    
     <script src="app.js"></script>
 </body>
 </html>
