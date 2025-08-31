@@ -738,283 +738,357 @@ select.form-control {
 }
 
 /* END PERPLEXITY DESIGN SYSTEM */
-/* Additional styles for the Quadrilateral Area Calculator */
+/* Application-specific styles */
 
+.app-container {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow-x: hidden;
+}
+
+/* Header Styles - with improved spacing */
 .header {
-    text-align: center;
-    margin-bottom: var(--space-32);
+    background: var(--color-bg-1);
+    border-bottom: 1px solid var(--color-border);
+    padding: var(--space-32) 0 var(--space-24) 0;
+    margin-top: var(--space-24); /* Added top margin to move title down */
 }
 
-.header h1 {
-    margin-bottom: var(--space-8);
+.header-title {
+    font-size: var(--font-size-4xl);
+    font-weight: var(--font-weight-bold);
     color: var(--color-text);
+    text-align: center;
+    margin-bottom: var(--space-8);
+    letter-spacing: var(--letter-spacing-tight);
 }
 
-.subtitle {
-    color: var(--color-text-secondary);
+.header-subtitle {
     font-size: var(--font-size-lg);
+    color: var(--color-text-secondary);
+    text-align: center;
     margin: 0;
+    font-weight: var(--font-weight-normal);
 }
 
+/* Main Content */
 .main-content {
-    max-width: 900px;
+    flex: 1;
+    padding: var(--space-32) 0;
+    min-height: calc(100vh - 200px); /* Ensure proper scrolling */
+}
+
+.calculator-section {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-24);
+    max-width: 800px;
     margin: 0 auto;
 }
 
-.calculator-card {
-    margin-bottom: var(--space-32);
+@media (min-width: 768px) {
+    .calculator-section {
+        grid-template-columns: 1fr 1fr;
+    }
 }
 
-.calculator-form {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-24);
+/* Form Styles */
+.instruction-text {
+    color: var(--color-text-secondary);
+    margin-bottom: var(--space-20);
+    font-size: var(--font-size-base);
+}
+
+.coordinate-form {
+    margin-bottom: var(--space-24);
 }
 
 .coordinates-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: var(--space-20);
+    grid-template-columns: 1fr;
+    gap: var(--space-16);
+    margin-bottom: var(--space-24);
+}
+
+@media (min-width: 640px) {
+    .coordinates-grid {
+        grid-template-columns: 1fr 1fr;
+    }
 }
 
 .coordinate-group {
-    background: var(--color-bg-1);
-    padding: var(--space-16);
-    border-radius: var(--radius-base);
-    border: 1px solid var(--color-border);
-}
-
-.coordinate-group h3 {
-    margin-bottom: var(--space-12);
-    font-size: var(--font-size-lg);
-    color: var(--color-text);
-    text-align: center;
-}
-
-.input-row {
     display: flex;
-    gap: var(--space-12);
+    flex-direction: column;
 }
 
-.input-row .form-group {
-    flex: 1;
-    margin-bottom: 0;
+.coordinate-inputs {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-8);
 }
 
-.form-group {
-    margin-bottom: var(--space-16);
-}
-
-.form-label {
-    font-weight: var(--font-weight-semibold);
-    color: var(--color-text);
-    text-align: center;
-    display: block;
-    margin-bottom: var(--space-6);
-}
-
-.form-control {
-    text-align: center;
-    font-weight: var(--font-weight-medium);
-}
-
-.form-control:focus {
-    box-shadow: var(--focus-ring);
+.coordinate-inputs .form-control {
+    margin: 0;
 }
 
 .button-group {
     display: flex;
-    gap: var(--space-16);
+    gap: var(--space-12);
+    flex-wrap: wrap;
     justify-content: center;
+}
+
+@media (min-width: 480px) {
+    .button-group {
+        justify-content: flex-start;
+    }
+}
+
+/* Example Section */
+.example-section {
+    background: var(--color-bg-2);
+    padding: var(--space-16);
+    border-radius: var(--radius-base);
+    border: 1px solid var(--color-border);
+}
+
+.example-section h3 {
+    margin-bottom: var(--space-12);
+    font-size: var(--font-size-lg);
+    color: var(--color-text);
+}
+
+.example-buttons {
+    display: flex;
+    gap: var(--space-8);
     flex-wrap: wrap;
 }
 
-.error-message {
-    background: rgba(var(--color-error-rgb), 0.1);
+/* Result Section */
+.result-section {
+    align-self: start;
+}
+
+.result-display {
+    min-height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.result-placeholder {
+    color: var(--color-text-secondary);
+    font-style: italic;
+    margin: 0;
+}
+
+.result-success {
+    background: var(--color-bg-3);
+    padding: var(--space-16);
+    border-radius: var(--radius-base);
+    border: 1px solid rgba(var(--color-success-rgb), 0.3);
+}
+
+.result-success h3 {
+    color: var(--color-success);
+    margin-bottom: var(--space-8);
+    font-size: var(--font-size-xl);
+}
+
+.area-value {
+    font-size: var(--font-size-2xl);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text);
+    margin-bottom: var(--space-8);
+}
+
+.calculation-details {
+    font-family: var(--font-family-mono);
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+    background: var(--color-secondary);
+    padding: var(--space-8);
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--color-border);
+    margin-top: var(--space-8);
+}
+
+.result-error {
+    background: var(--color-bg-4);
+    padding: var(--space-16);
+    border-radius: var(--radius-base);
     border: 1px solid rgba(var(--color-error-rgb), 0.3);
     color: var(--color-error);
-    padding: var(--space-12) var(--space-16);
-    border-radius: var(--radius-base);
-    margin-top: var(--space-16);
     text-align: center;
-    font-weight: var(--font-weight-medium);
 }
 
-.result {
-    background: rgba(var(--color-success-rgb), 0.1);
-    border: 1px solid rgba(var(--color-success-rgb), 0.3);
-    color: var(--color-success);
-    padding: var(--space-20);
-    border-radius: var(--radius-base);
-    margin-top: var(--space-20);
-    text-align: center;
-    font-size: var(--font-size-xl);
-    font-weight: var(--font-weight-semibold);
+/* Footer Styles */
+.footer {
+    background: var(--color-bg-8);
+    border-top: 1px solid var(--color-border);
+    padding: var(--space-32) 0 var(--space-24) 0;
+    margin-top: var(--space-32);
 }
 
-.result-value {
-    font-size: var(--font-size-3xl);
-    font-weight: var(--font-weight-bold);
-    display: block;
-    margin-top: var(--space-8);
-    color: var(--color-success);
-}
-
-.info-section {
+.footer-content {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: var(--space-20);
+    grid-template-columns: 1fr;
+    gap: var(--space-24);
 }
 
-.formula-card,
-.examples-card {
-    background: var(--color-bg-2);
+@media (min-width: 768px) {
+    .footer-content {
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--space-32);
+    }
 }
 
-.formula-card h3,
-.examples-card h3 {
-    margin-bottom: var(--space-16);
+@media (min-width: 1024px) {
+    .footer-content {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+.footer-section {
+    margin-bottom: var(--space-20);
+}
+
+.footer-section h3 {
     color: var(--color-text);
-}
-
-.formula {
-    background: var(--color-surface);
-    padding: var(--space-16);
-    border-radius: var(--radius-base);
-    border: 1px solid var(--color-border);
-    font-family: var(--font-family-mono);
     font-size: var(--font-size-lg);
-    text-align: center;
-    margin: var(--space-16) 0;
-    color: var(--color-text);
-    font-weight: var(--font-weight-medium);
+    font-weight: var(--font-weight-semibold);
+    margin-bottom: var(--space-12);
+    border-bottom: 2px solid var(--color-primary);
+    padding-bottom: var(--space-4);
+    display: inline-block;
 }
 
-.formula-description {
+.footer-section p {
     color: var(--color-text-secondary);
-    margin: 0;
-    line-height: 1.6;
+    line-height: var(--line-height-normal);
+    margin-bottom: var(--space-12);
 }
 
-.examples-grid {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-16);
-}
-
-.example {
+.formula-display {
     background: var(--color-surface);
     padding: var(--space-16);
     border-radius: var(--radius-base);
     border: 1px solid var(--color-border);
-    text-align: center;
+    margin-top: var(--space-12);
 }
 
-.example h4 {
-    margin-bottom: var(--space-12);
+.formula-display h4 {
+    font-size: var(--font-size-base);
     color: var(--color-text);
-    font-size: var(--font-size-md);
-}
-
-.example-btn {
     margin-bottom: var(--space-8);
-    width: 100%;
 }
 
-.example-coords {
+.formula-code {
+    display: block;
+    background: var(--color-secondary);
+    padding: var(--space-12);
+    border-radius: var(--radius-sm);
+    font-family: var(--font-family-mono);
+    font-size: var(--font-size-sm);
+    color: var(--color-text);
+    border: 1px solid var(--color-border);
+    overflow-x: auto;
+    white-space: nowrap;
+}
+
+.tips-list,
+.applications-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.tips-list li,
+.applications-list li {
+    color: var(--color-text-secondary);
+    margin-bottom: var(--space-8);
+    padding-left: var(--space-16);
+    position: relative;
+}
+
+.tips-list li::before,
+.applications-list li::before {
+    content: "•";
+    color: var(--color-primary);
+    font-weight: var(--font-weight-bold);
+    position: absolute;
+    left: 0;
+}
+
+.footer-bottom {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding-top: var(--space-20);
+    border-top: 1px solid var(--color-border);
+    margin-top: var(--space-20);
+}
+
+.footer-bottom p {
     color: var(--color-text-secondary);
     font-size: var(--font-size-sm);
     margin: 0;
-    font-family: var(--font-family-mono);
 }
 
-.hidden {
-    display: none !important;
-}
+/* Responsive adjustments */
+@media (max-width: 767px) {
+    .header {
+        padding: var(--space-20) 0 var(--space-16) 0;
+        margin-top: var(--space-16);
+    }
 
-/* Responsive design */
-@media (max-width: 768px) {
-    .container {
-        padding: var(--space-16) var(--space-12);
-    }
-    
-    .coordinates-grid {
-        grid-template-columns: 1fr;
-    }
-    
-    .button-group {
-        flex-direction: column;
-        align-items: center;
-    }
-    
-    .button-group .btn {
-        width: 100%;
-        max-width: 300px;
-    }
-    
-    .info-section {
-        grid-template-columns: 1fr;
-    }
-    
-    .examples-grid {
-        gap: var(--space-12);
-    }
-}
-
-@media (max-width: 480px) {
-    .header h1 {
+    .header-title {
         font-size: var(--font-size-3xl);
     }
-    
-    .subtitle {
-        font-size: var(--font-size-md);
+
+    .header-subtitle {
+        font-size: var(--font-size-base);
     }
-    
-    .input-row {
-        flex-direction: column;
-        gap: var(--space-8);
+
+    .main-content {
+        padding: var(--space-20) 0;
     }
-    
-    .coordinate-group {
-        padding: var(--space-12);
+
+    .button-group {
+        justify-content: center;
     }
-    
-    .formula {
-        font-size: var(--font-size-md);
-        padding: var(--space-12);
-    }
-    
-    .result {
-        padding: var(--space-16);
-        font-size: var(--font-size-lg);
-    }
-    
-    .result-value {
-        font-size: var(--font-size-2xl);
+
+    .formula-code {
+        font-size: var(--font-size-xs);
     }
 }
 
-/* Hover and focus effects */
-.example-btn:hover {
-    transform: translateY(-1px);
-    box-shadow: var(--shadow-md);
+/* Smooth scrolling */
+html {
+    scroll-behavior: smooth;
 }
 
-.coordinate-group:hover {
-    border-color: var(--color-primary);
-    box-shadow: var(--shadow-sm);
+/* Ensure proper overflow handling */
+body {
+    overflow-x: hidden;
+    overflow-y: auto;
 }
 
-.btn:hover {
-    transform: translateY(-1px);
+/* Focus states for accessibility */
+.btn:focus-visible,
+.form-control:focus {
+    outline: var(--focus-outline);
+    outline-offset: 2px;
 }
 
 /* Animation for result display */
-.result.show {
-    animation: slideIn 0.3s var(--ease-standard);
+.result-success,
+.result-error {
+    animation: fadeIn 0.3s ease-in-out;
 }
 
-@keyframes slideIn {
+@keyframes fadeIn {
     from {
         opacity: 0;
         transform: translateY(10px);
@@ -1023,22 +1097,4 @@ select.form-control {
         opacity: 1;
         transform: translateY(0);
     }
-}
-
-/* Loading state */
-.btn--loading {
-    opacity: 0.7;
-    cursor: not-allowed;
-    pointer-events: none;
-}
-
-.btn--loading::after {
-    content: '...';
-    animation: loading 1s infinite;
-}
-
-@keyframes loading {
-    0%, 33% { opacity: 1; }
-    34%, 66% { opacity: 0.7; }
-    67%, 100% { opacity: 0.4; }
 }
